@@ -117,6 +117,18 @@ if not api_key:
     st.sidebar.warning("⚠️ Enter API Key for AI features")
 
 st.sidebar.divider()
+st.sidebar.header("Debug Info")
+st.sidebar.text(f"CWD: {os.getcwd()}")
+st.sidebar.text(f"Base: {constants.BASE_DIR}")
+chk_path = os.path.join(constants.BASE_DIR, "api_data_aadhar_enrolment")
+st.sidebar.text(f"Path Exists: {os.path.exists(chk_path)}")
+if os.path.exists(chk_path):
+    st.sidebar.text(f"Files: {len(os.listdir(chk_path))}")
+    st.sidebar.text(f"Sample: {os.listdir(chk_path)[:2]}")
+else:
+    st.sidebar.error(f"Missing: {chk_path}")
+
+st.sidebar.divider()
 st.sidebar.header("Filter Options")
 
 # State Filter
@@ -173,6 +185,9 @@ with tab1:
         c1.metric("Total Enrolments", f"{kpis['total_enrolments']:,}")
         c2.metric("Total Demographic Updates", f"{kpis['total_demo_updates']:,}", delta_color="normal")
         c3.metric("Total Biometric Updates", f"{kpis['total_bio_updates']:,}")
+    
+    if kpis['total_enrolments'] == 0:
+        st.error("⚠️ No Data Loaded! The dataset appears to be empty. Please check the 'Debug Info' in the sidebar to verify file paths.")
     # with g1:
         # Gauge Chart for System Health (Update Saturation)
     total_updates = kpis.get('total_demo_updates', 0) + kpis.get('total_bio_updates', 0)
