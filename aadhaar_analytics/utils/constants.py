@@ -2,7 +2,7 @@
 import os
 
 # Paths
-BASE_DIR = r"d:/UIDAI"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_RAW = os.path.join(BASE_DIR, "aadhaar_analytics", "data", "raw")
 DATA_PROCESSED = os.path.join(BASE_DIR, "aadhaar_analytics", "data", "processed")
 

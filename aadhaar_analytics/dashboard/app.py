@@ -120,11 +120,16 @@ st.sidebar.divider()
 st.sidebar.header("Filter Options")
 
 # State Filter
-all_states = sorted(list(set(
-    df_enr[constants.COL_STATE].dropna().unique().tolist() + 
-    df_demo[constants.COL_STATE].dropna().unique().tolist() +
-    df_bio[constants.COL_STATE].dropna().unique().tolist()
-)))
+# State Filter
+all_states = set()
+if not df_enr.empty and constants.COL_STATE in df_enr.columns:
+    all_states.update(df_enr[constants.COL_STATE].dropna().unique().tolist())
+if not df_demo.empty and constants.COL_STATE in df_demo.columns:
+    all_states.update(df_demo[constants.COL_STATE].dropna().unique().tolist())
+if not df_bio.empty and constants.COL_STATE in df_bio.columns:
+    all_states.update(df_bio[constants.COL_STATE].dropna().unique().tolist())
+
+all_states = sorted(list(all_states))
 selected_state = st.sidebar.selectbox("Select State", ["All"] + all_states)
 
 # Filter Dataframes
