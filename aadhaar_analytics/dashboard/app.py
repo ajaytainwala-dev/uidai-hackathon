@@ -122,16 +122,6 @@ if not api_key:
     st.sidebar.warning("⚠️ Enter API Key for AI features")
 
 st.sidebar.divider()
-st.sidebar.header("Debug Info")
-st.sidebar.text(f"CWD: {os.getcwd()}")
-st.sidebar.text(f"Base: {constants.BASE_DIR}")
-chk_path = os.path.join(constants.BASE_DIR, "api_data_aadhar_enrolment")
-st.sidebar.text(f"Path Exists: {os.path.exists(chk_path)}")
-if os.path.exists(chk_path):
-    st.sidebar.text(f"Files: {len(os.listdir(chk_path))}")
-    st.sidebar.text(f"Sample: {os.listdir(chk_path)[:2]}")
-else:
-    st.sidebar.error(f"Missing: {chk_path}")
 
 st.sidebar.divider()
 st.sidebar.header("Filter Options")
