@@ -108,7 +108,9 @@ st.sidebar.header("Configuration")
 
 # API Key
 # api_key = ""
-api_key = st.sidebar.text_input("🔑 Gemini API Key", type="password", help="Enter your Google Gemini API Key to enable AI insights.")
+from dotenv import load_dotenv
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY") or st.sidebar.text_input("🔑 Gemini API Key", type="password", help="Enter your Google Gemini API Key to enable AI insights.")
 gemini = GeminiService(api_key) if api_key else None
 
 if not api_key:
