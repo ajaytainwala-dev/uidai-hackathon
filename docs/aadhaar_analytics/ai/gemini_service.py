@@ -1,7 +1,12 @@
 
 import os
-import google.generativeai as genai
 import logging
+
+try:
+    import google.generativeai as genai
+    HAS_GENAI = True
+except ImportError:
+    HAS_GENAI = False
 
 class GeminiService:
     def __init__(self, api_key):
@@ -12,6 +17,11 @@ class GeminiService:
     def setup(self):
         if not self.api_key:
             return
+        
+        if not HAS_GENAI:
+             logging.warning("Google Generative AI library not found. AI features disabled.")
+             return
+
         try:
             genai.configure(api_key=self.api_key)
             self.model = genai.GenerativeModel('gemini-2.5-flash')
@@ -19,6 +29,9 @@ class GeminiService:
             logging.error(f"Failed to setup Gemini: {e}")
 
     def generate_response(self, prompt):
+        if not HAS_GENAI:
+            return "⚠️ AI Features are unavailable (Library 'google.generativeai' is not supported in this environment)."
+
         if not self.model:
             return "⚠️ Gemini API Key not provided or invalid. Please check the sidebar."
         
