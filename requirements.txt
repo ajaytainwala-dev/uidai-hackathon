@@ -1,6 +1,6 @@
 streamlit
 pandas
 plotly
-google-generativeai
+google-genai
 numpy
 dotenv

@@ -1,69 +1,199 @@
-
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Aadhaar Analytics</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.53.0/build/stlite.css" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.53.0/build/stlite.js"></script>
-    <script>
-      stlite.mount(
-        {
-          requirements: ["streamlit", "pandas", "plotly"],
-          entrypoint: "aadhaar_analytics/dashboard/app.py",
-          files: {
-  "aadhaar_analytics/README.md": {
-    "url": "aadhaar_analytics/README.md"
-  },
-  "aadhaar_analytics/setup_geo.py": {
-    "url": "aadhaar_analytics/setup_geo.py"
-  },
-  "aadhaar_analytics/ai/gemini_service.py": {
-    "url": "aadhaar_analytics/ai/gemini_service.py"
-  },
-  "aadhaar_analytics/analytics/descriptive.py": {
-    "url": "aadhaar_analytics/analytics/descriptive.py"
-  },
-  "aadhaar_analytics/analytics/diagnostic.py": {
-    "url": "aadhaar_analytics/analytics/diagnostic.py"
-  },
-  "aadhaar_analytics/analytics/predictive.py": {
-    "url": "aadhaar_analytics/analytics/predictive.py"
-  },
-  "aadhaar_analytics/analytics/prescriptive.py": {
-    "url": "aadhaar_analytics/analytics/prescriptive.py"
-  },
-  "aadhaar_analytics/dashboard/app.py": {
-    "url": "aadhaar_analytics/dashboard/app.py"
-  },
-  "aadhaar_analytics/data/geo/india_states.geojson": {
-    "url": "aadhaar_analytics/data/geo/india_states.geojson"
-  },
-  "aadhaar_analytics/ingestion/loader.py": {
-    "url": "aadhaar_analytics/ingestion/loader.py"
-  },
-  "aadhaar_analytics/preprocessing/cleaning.py": {
-    "url": "aadhaar_analytics/preprocessing/cleaning.py"
-  },
-  "aadhaar_analytics/preprocessing/feature_engineering.py": {
-    "url": "aadhaar_analytics/preprocessing/feature_engineering.py"
-  },
-  "aadhaar_analytics/utils/constants.py": {
-    "url": "aadhaar_analytics/utils/constants.py"
-  },
-  "aadhaar_analytics/visualization/charts.py": {
-    "url": "aadhaar_analytics/visualization/charts.py"
-  }
-}
-        },
-        document.getElementById("root")
-      );
-    </script>
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aadhaar Analytics Pro</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap"
+    rel="stylesheet">
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Plotly -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Loader -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <h3 style="margin-top:20px; color:var(--accent)">Loading Analytics Ecosystem...</h3>
+  </div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="brand">
+        <div class="logo-icon">🆔</div>
+        <div class="logo-text">
+          <h2>UIDAI</h2>
+          <span>Analytics Core</span>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <label>Region Filter</label>
+        <div class="filter-box">
+          <select id="state-filter">
+            <option value="All">All India</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <label>Dashboards</label>
+        <button class="nav-item active" data-tab="overview">Overview</button>
+        <button class="nav-item" data-tab="enrolment">Enrolment Trends</button>
+        <button class="nav-item" data-tab="demographics">Demographics</button>
+        <button class="nav-item" data-tab="biometrics">Biometrics</button>
+        <button class="nav-item" data-tab="predictions">Forecasts</button>
+        <button class="nav-item" data-tab="recommendations">Policy & Actions</button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+      <header>
+        <div>
+          <h1 id="page-title">Executive Dashboard</h1>
+          <p id="page-subtitle">Analytics for Region: All India</p>
+        </div>
+        <!-- Status Badge -->
+        <div id="ai-status" class="hidden">
+          <span
+            style="background: rgba(59,130,246,0.2); color: #60a5fa; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(59,130,246,0.4); font-size: 0.8rem;">
+            ✨ Gemini AI Active
+          </span>
+        </div>
+      </header>
+
+      <!-- --- TAB: OVERVIEW --- -->
+      <div id="overview" class="tab-pane active">
+
+        <!-- AI Insight Box -->
+        <div id="ai-insight-box" class="ai-panel hidden">
+          <div class="ai-header">🔮 Chief Strategy Officer Insight</div>
+          <div class="ai-content" id="ai-text-content">Analysis pending...</div>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Total Enrolments</div>
+            <div class="kpi-value" id="kpi-enrolments">0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Demographic Updates</div>
+            <div class="kpi-value" id="kpi-demo-updates">0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Biometric Updates</div>
+            <div class="kpi-value" id="kpi-bio-updates">0</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Update Intensity</div>
+            <div class="kpi-value" id="kpi-intensity">0%</div>
+            <div id="gauge-container" style="position:absolute; right:10px; bottom:0px; transform: scale(0.6)"></div>
+          </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="charts-row">
+          <div class="chart-card half">
+            <h3>National Performance</h3>
+            <div id="chart-state-bar" class="chart-container"></div>
+          </div>
+          <div class="chart-card half">
+            <h3>Geographic Impact</h3>
+            <div id="chart-map" class="chart-container"></div>
+          </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="charts-row">
+          <div class="chart-card full">
+            <h3>District-Wise Density (Top 50)</h3>
+            <div id="chart-treemap" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- --- TAB: ENROLMENT --- -->
+      <div id="enrolment" class="tab-pane">
+        <div class="chart-card full" style="margin-bottom:20px">
+          <h3>Enrolment Trends (Age Group Segmentation)</h3>
+          <div id="chart-trend-enr" class="chart-container"></div>
+        </div>
+        <div class="charts-row">
+          <div class="chart-card half">
+            <h3>Age Distribution</h3>
+            <div id="chart-age-pie" class="chart-container"></div>
+          </div>
+          <div class="chart-card half">
+            <h3>Conversion Funnel</h3>
+            <div id="chart-funnel" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- --- TAB: DEMOGRAPHICS --- -->
+      <div id="demographics" class="tab-pane">
+        <div class="chart-card full">
+          <h3>Demographic Update Trends</h3>
+          <div id="chart-trend-demo" class="chart-container"></div>
+        </div>
+      </div>
+
+      <!-- --- TAB: BIOMETRICS --- -->
+      <div id="biometrics" class="tab-pane">
+        <div class="chart-card full">
+          <h3>Biometric Update Trends</h3>
+          <div id="chart-trend-bio" class="chart-container"></div>
+        </div>
+      </div>
+
+      <!-- --- TAB: PREDICTIONS --- -->
+      <div id="predictions" class="tab-pane">
+        <div class="chart-card full">
+          <h3>🔮 3-Month Demand Forecast (Neural Prophet)</h3>
+          <div id="chart-forecast" class="chart-container"></div>
+        </div>
+      </div>
+
+      <!-- --- TAB: RECOMMENDATIONS --- -->
+      <div id="recommendations" class="tab-pane">
+        <div class="ai-panel">
+          <div class="ai-header">📜 Ministerial Decision Note (AI Drafted)</div>
+          <div class="ai-content-large" id="ai-policy-text">Generating draft...</div>
+        </div>
+
+        <div class="chart-card full">
+          <h3>🚨 Action Required: High Stress Zones</h3>
+          <div class="table-container">
+            <table id="recs-table">
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>District</th>
+                  <th>Metric</th>
+                  <th>Action Required</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- JS Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Logic -->
+  <script src="js/app.js"></script>
+</body>
+
 </html>
-    

@@ -1,29 +1,31 @@
-
 import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import logging
 
 class GeminiService:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.model = None
+        self.client = None
         self.setup()
 
     def setup(self):
         if not self.api_key:
             return
         try:
-            genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-2.5-flash')
+            self.client = genai.Client(api_key=self.api_key)
         except Exception as e:
             logging.error(f"Failed to setup Gemini: {e}")
 
     def generate_response(self, prompt):
-        if not self.model:
+        if not self.client:
             return "⚠️ Gemini API Key not provided or invalid. Please check the sidebar."
         
         try:
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model='gemini-2.0-flash',
+                contents=prompt
+            )
             return response.text
         except Exception as e:
             return f"❌ Error generating AI response: {str(e)}"
