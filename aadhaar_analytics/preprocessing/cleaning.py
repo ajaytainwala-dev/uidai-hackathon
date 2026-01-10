@@ -35,11 +35,11 @@ def clean_dataframe(df, dataset_type):
         if c in df.columns:
             df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0).astype(int)
 
-    # 4. Normalize State/District strings
+    # 4. Normalize State/District strings & Optimize Memory
     if constants.COL_STATE in df.columns:
-        df[constants.COL_STATE] = df[constants.COL_STATE].astype(str).str.title().str.strip()
+        df[constants.COL_STATE] = df[constants.COL_STATE].astype(str).str.title().str.strip().astype('category')
     if constants.COL_DISTRICT in df.columns:
-        df[constants.COL_DISTRICT] = df[constants.COL_DISTRICT].astype(str).str.title().str.strip()
+        df[constants.COL_DISTRICT] = df[constants.COL_DISTRICT].astype(str).str.title().str.strip().astype('category')
         
     # Drop rows where date is NaT if Date is critical (it is)
     df = df.dropna(subset=[constants.COL_DATE])

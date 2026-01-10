@@ -9,9 +9,9 @@ def add_time_features(df):
     
     df['year'] = df[constants.COL_DATE].dt.year
     df['month'] = df[constants.COL_DATE].dt.month
-    df['month_name'] = df[constants.COL_DATE].dt.month_name()
+    df['month_name'] = df[constants.COL_DATE].dt.month_name().astype('category')
     # String sortable format
-    df['year_month'] = df[constants.COL_DATE].dt.to_period('M').astype(str)
+    df['year_month'] = df[constants.COL_DATE].dt.to_period('M').astype(str).astype('category')
     
     return df
 

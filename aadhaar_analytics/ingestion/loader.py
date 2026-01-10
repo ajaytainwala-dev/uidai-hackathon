@@ -50,6 +50,13 @@ def load_dataset(dataset_type):
         return pd.DataFrame()
 
     final_df = pd.concat(dfs, ignore_index=True)
+    
+    # Memory Safety: Sample if too large
+    MAX_ROWS = 300000 
+    if len(final_df) > MAX_ROWS:
+        logger.warning(f"Dataset {dataset_type} is too large ({len(final_df)} rows). Sampling down to {MAX_ROWS}...")
+        final_df = final_df.sample(n=MAX_ROWS, random_state=42)
+        
     logger.info(f"Loaded {dataset_type} dataset with {len(final_df)} rows.")
     return final_df
 
